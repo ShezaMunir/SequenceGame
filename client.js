@@ -1,7 +1,5 @@
 const ws = new WebSocket(`ws://localhost:8080`);
 
-// let newboard;
-
 const Sequence = () => {
   // hooks
   const [board, setBoard] = React.useState([[]]);
@@ -9,11 +7,6 @@ const Sequence = () => {
   const [cards, setCards] = React.useState([]);
   const [deck, setDeck] = React.useState([]);
   const [currTurn, setCurrTurn] = React.useState(0);
-  // const [numPlays, setNumPlays] = React.useState(0);
-  // const
-
-  // turn variable
-  // message hook
 
   const [msgShow, setMsgShow] = React.useState(
     "Welcome to Sequence! Waiting for players."
@@ -30,13 +23,8 @@ const Sequence = () => {
   ws.onopen = () => {
     let msgElement = document.createElement("div");
     msgElement.textContent = "Connection with server established.";
-    // console.log();
 
     document.getElementById("root").append(msgElement);
-    // ws.send(JSON.stringify({
-    //   "type": "start",
-    //   "msg": "hello",
-    // }));
   };
 
   // handle messages from server
@@ -45,27 +33,19 @@ const Sequence = () => {
 
     let msgElement = document.createElement("div");
     let jsonData = JSON.parse(event.data);
-    // console.log(jsonData);
     if (jsonData.type == "newboard") {
-      // msgElement.textContent = "Server said:"+jsonData.board;
-      // console.log(jsonData.board);
       let newboard = jsonData.board;
-      // setTurn(jsonData.turn);
+
       setPositionBoard(jsonData.positionBoard);
       setBoard(newboard);
 
-      // document.getElementById('root').append(msgElement);
-      console.log("new board here" + newboard);
       setCurrTurn(jsonData.currentTurn);
-      // console.log("set NEWWW board here"+board);
     }
     if (jsonData.type == "clientdeck") {
-      console.log(jsonData.clientdeck);
       setDeck(jsonData.clientdeck);
     }
 
     if (jsonData.type == "updatedPosboard") {
-      // console.log(jsonData.posBoard);
       if (myTurnNumber == jsonData.currentTurn) {
         setMsgShow("It is your turn.");
       } else {
@@ -73,7 +53,6 @@ const Sequence = () => {
       }
 
       setCurrTurn(jsonData.currentTurn);
-      // setMsgShow()
       setPositionBoard(jsonData.posBoard);
     }
 
@@ -85,7 +64,6 @@ const Sequence = () => {
       }
 
       setCurrTurn(jsonData.currentTurn);
-      //yahn send start
       ws.send(
         JSON.stringify({
           type: "start",
@@ -112,20 +90,12 @@ const Sequence = () => {
     }
   };
 
-  // function createBoard() {
-  // let list = board[0][0].map((card)=>{
-  //   <div class="playingCards fourColours rotateHand">
-  //   <div className={card} ><span class="rank"></span></div>
-  //   </div>
-  // })
-
   // handle board clicks
   const handleBoardClick = (inner, i, j) => {
     console.log("Card" + inner + " was clicked");
 
     console.log(positionBoard[i][j]);
     if (currTurn == myTurnNumber) {
-      // setNumPlays(numPlays+1);
       let valid = false;
       let new_deck = [];
       for (let i = 0; i < deck.length; i++) {
@@ -150,7 +120,6 @@ const Sequence = () => {
           }
         }
       }
-      // console.log(new_deck);
 
       if (valid) {
         setDeck(new_deck);
@@ -163,14 +132,12 @@ const Sequence = () => {
         setMsgShow("Valid move.");
         ws.send(JSON.stringify(possUpdate));
       } else {
-        // alert("Invalid move");
         setMsgShow("Invalid move. Try again.");
       }
-      // console.log("row: "+ j +" column: "+ i);
+
       if (new_deck.length == 0) {
         let outta_cards = {
           type: "outta_cards",
-          // "myturn": myTurnNumber,
         };
         ws.send(JSON.stringify(outta_cards));
       }
@@ -185,23 +152,15 @@ const Sequence = () => {
     }
   };
 
-  // let changedRow;
-  // let changedCol;
-
   let mycards = board.map((arr, i) => {
-    // console.log(positionBoard[i]);
-    // changedRow = i;
     return (
-      // let msgElement = document.createElement('div');
       <div>
         {/* <div> */}
         <div className="playingCards fourColours rotateHand">
           <ul className="table">
             {arr.map((inner, j) => {
-              //  {console.log(positionBoard[i][j] || {})}
               let rankindex = inner.indexOf("rank");
-              //  {positionBoard[i][j]}
-              //  console.log(inner[rankindex+5]);
+
               let rankk;
               if (inner[rankk + 1] !== " ") {
                 rankk = inner[rankindex + 5] + inner[rankindex + 6];
@@ -216,11 +175,10 @@ const Sequence = () => {
                   piece == "hearts" ||
                   piece == "spades"
                 ) {
-                  // console.log(piece)
                   return piece;
                 }
               });
-              //  console.log(mysuit[2]);
+
               let selected_suit;
               switch (mysuit[2]) {
                 case "diams":
@@ -238,14 +196,6 @@ const Sequence = () => {
                 default:
                   selected_suit = "";
               }
-              //  if(positionBoard[i][j]!="-")
-              //  {
-              //    inner = "card";
-              //    rankk = "green";
-
-              //  }
-
-              // });
 
               return (
                 <div>
@@ -265,44 +215,17 @@ const Sequence = () => {
                         <div className={positionBoard[j][i]}></div>
                       </div>
                     )}
-
-                    {/* <div onClick= {()=>{handleBoardClick(inner, i, j)}} className={inner}>
-                  <span className="rank">{rankk}</span><span className="suit">{selected_suit}</span>
-                  </div> */}
-                    {/* <div className="card"><div className="blue"></div></div> */}
-                    {/* {whichCard(i,j)} */}
                   </li>
                 </div>
               );
             })}
-            {/* {arr} */}
-
-            {/* <ProjectItem key={project.title} project={project}  />
-          { 
-            project.icons.map(i => <img key={i.src} src={i.src} alt="" />) 
-          } */}
           </ul>
         </div>
         {/* </div> */}
       </div>
     );
   });
-  // const whichCard = (j,i) =>{
-  //   if(positionBoard[i][j] == "-")
-  //   {
-  //     return(
-  //       <div onClick= {()=>{handleBoardClick(inner, i, j)}} className={inner}>
-  //       <span className="rank">{rankk}</span><span className="suit">{selected_suit}</span>
-  //       </div>
-  //     )
-  //   }
-  //   else
-  //   {
-  //     return(
-  //       <div className="card"><div className="blue"></div></div>
-  //     )
-  //   }
-  // }
+
   let clientDeckCards = deck.map((clientCard) => {
     let rankClient;
     let rankindex2 = clientCard.indexOf("rank");
@@ -318,7 +241,6 @@ const Sequence = () => {
         piece == "hearts" ||
         piece == "spades"
       ) {
-        // console.log(piece)
         return piece;
       }
     });
@@ -354,16 +276,8 @@ const Sequence = () => {
   return (
     <div>
       <div className="container">
-        {/* code for sequence board comes here */}
-        {/* {setBoard(newboard)} */}
-        {/* <div class="playingCards fourColours rotateHand">
-      {console.log("BOARD: "+board)}
-      <div className="card back"><span class="rank"></span></div>
-      </div> */}
         {mycards}
 
-        {/* <h1>my new board</h1> */}
-        {/* board */}
         <div></div>
       </div>
       <div className="container">
