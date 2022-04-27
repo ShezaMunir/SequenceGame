@@ -157,7 +157,6 @@ function checkVertical(turn, i, j, numToCheck) {
     }
 
     if (semcount == numToCheck) {
-      // console.log(semcount);
       return true;
     }
   }
@@ -169,12 +168,8 @@ function checkDiagRL(turn, i, j, numToCheck) {
   let y = j;
   let semcount = 0;
 
-  // console.log(i,j);
-
   while (x < positionBoard[0].length && y >= 0) {
-    // console.log(x,y);
     if (positionBoard[x][y] == turn) {
-      // console.log(positionBoard[x][y]);
       semcount += 1;
     } else {
       // semcount = 0;
@@ -192,15 +187,12 @@ function checkDiagRL(turn, i, j, numToCheck) {
   y = j + 1;
 
   while (y < positionBoard[0].length && x >= 0) {
-    // console.log(x,y);
     if (positionBoard[x][y] == turn) {
-      // console.log(positionBoard[x][y]);
       semcount += 1;
     } else {
       semcount = 0;
     }
     if (semcount == numToCheck) {
-      // console.log(semcount);
       return true;
     }
 
@@ -216,12 +208,9 @@ function checkDiagLR(turn, i, j, numToCheck) {
   let y = j;
   let semcount = 0;
 
-  // console.log(i,j);
-
   while (x < positionBoard[0].length && y < positionBoard[0].length) {
     // console.log(x,y);
     if (positionBoard[x][y] == turn) {
-      // console.log(positionBoard[x][y],x,y);
       semcount += 1;
     } else {
       // semcount = 0;
@@ -274,8 +263,6 @@ function checkHorizontal(turn, i, j, numToCheck) {
   return false;
 }
 
-// checks for combos of 5 abhi
-// tp change for 4, use fakeboard with corners filled in bas
 const checkWinnerBoard = (turn, i, j) => {
   if (
     checkHorizontal(turn, i, j, 5) |
@@ -418,12 +405,6 @@ wss.on("connection", (ws) => {
   clients.set(ws, clientInfo);
   // ws is unique for each connection
 
-  // const starter = {
-  //   "type" : "newboard",
-  //   "board" : board,
-  //   "positionBoard": positionBoard,
-  //   "turn" : turns[clientID],
-  // };
   const starter = {
     type: "initial",
     turn: turns[clientID - 1],
@@ -434,16 +415,10 @@ wss.on("connection", (ws) => {
   if (clientID == 4) {
     connected_4 = true;
     console.log("all conn");
-    // ws.send(JSON.stringify({
-    //   "type" : "update_message",
-    //   "msg" : "All connected! Start game.",
-    // }))
   }
 
   if (connected_4 == true) {
     console.log("intrue");
-    // console.log(clients);
-    // console.log(ws);
 
     let deck_index = 0;
 
@@ -453,7 +428,7 @@ wss.on("connection", (ws) => {
         JSON.stringify({
           type: "update_message",
           msg: "It is Player " + currentTurn + "'s turn.",
-          // "msg" : "It is djksf turn",
+
           currentTurn: currentTurn,
         })
       );
@@ -553,7 +528,3 @@ wss.on("connection", (ws) => {
     }
   }
 });
-
-// now left: winning condition with corners, 4 cards : method: make fakeboard with corners as that turn's color and check 5 wala stuff again
-// giving 6 more cards when cards finish
-// all cards finished -> draw statement
