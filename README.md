@@ -1,4 +1,4 @@
-##Sequence Game (Javascript)
+## Sequence Game (Javascript)
 
 ### Description:
 This game has been built using React for the fronted and WebSockets for client to server communication.
