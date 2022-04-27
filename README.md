@@ -6,7 +6,7 @@ This game has been built using React for the fronted and WebSockets for client t
 ### How to play:
 1. Clone the repo
 2. Start the server:
-  `node server.js'
+  ```node server.js```
 3. In your browser go to the link: localhost:3000/mydoc
 4. The game waits for four players to connect, and then begins.
 5. Players 1 and 2 are green while players 2 and 4 are blue. The players play in teams according to color. 
